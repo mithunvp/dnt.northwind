@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DNT.NorthWind.DataAccess.Interface;
+using DNT.NorthWind.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +27,8 @@ namespace DNT.NorthWind.Web.Controllers
         // GET: Home/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var Employee = _employeeRepository.GetEmployeesById(id);
+            return View(Employee);
         }
 
         // GET: Home/Create
@@ -38,15 +40,22 @@ namespace DNT.NorthWind.Web.Controllers
         // POST: Home/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Employees data)
         {
             try
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
+                var employeeId = _employeeRepository.AddEmployee(data);
+                if (employeeId > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    return View();
+                }
+                
             }
-            catch
+            catch(Exception ex)
             {
                 return View();
             }

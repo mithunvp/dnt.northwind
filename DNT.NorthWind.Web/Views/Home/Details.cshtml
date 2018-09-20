@@ -1,0 +1,43 @@
+﻿@model DNT.NorthWind.Models.Employees
+<div style="padding:20px;">
+    <div>
+        <div class="card" style="width:500px">
+            <div class="card-body">
+                <h4 class="card-title">
+                    @($"{Model.TitleOfCourtesy} {Model.FirstName} {Model.LastName}")
+                </h4>
+                <i class="card-text">@($"{Model.Title}")</i>
+                <p class="card-text"><i class="fas fa-map-marker"></i> @($"{Model.City}, {Model.Country}")</p>
+                <p><b>Address: </b></p>
+                <address>
+                    <span>@($"{Model.Address}")</span><br />
+                    <span>@($"{Model.City}")</span><br />
+                    <span>@($"{Model.Country}") - @($"{Model.PostalCode}")</span><br />
+                    <span><i class="fas fa-phone"></i> @($"{Model.HomePhone}")</span><br />
+                </address>
+            </div>
+        </div>
+
+    </div>
+    <table class="table table-hover" style="width:500px">
+        <thead>
+            <tr>
+                <th>Territory</th>
+                <th>Region</th>                
+            </tr>
+        </thead>
+        @foreach (var item in Model.Territories) { 
+            <tbody>
+            <tr>
+                <td>@(item.TerritoryDescription)</td>
+                <td>@(item.RegionDescription)</td>                
+            </tr>
+            </tbody>
+        }
+    </table>
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }) |
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+</div>

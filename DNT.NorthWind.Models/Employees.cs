@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DNT.NorthWind.Models
@@ -47,15 +48,7 @@ namespace DNT.NorthWind.Models
         [MaxLength(4)]
         public string Extension { get; set; }
 
-        
-        public string Photo { get; set; }
-
-        
-        public string Notes { get; set; }
-
-        public Int32 ReportsTo { get; set; }
-
-        
+        public IEnumerable<EmployeesTerritory> Territories { get; set; }
 
     }
 

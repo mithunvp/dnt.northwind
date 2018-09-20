@@ -16,7 +16,64 @@ namespace DNT.NorthWind.DataAccess.Implementation
         {
             _connectionFactory = connectionFactory;
         }
-        
+
+        public int AddEmployee(Employees employees)
+        {
+            string procName = "spEmployeeInsert";
+            var param = new DynamicParameters();
+            int EmployeeId = 0;
+            
+            param.Add("@EmployeeId", employees.EmployeeID, null, ParameterDirection.Output);
+            param.Add("@Title", employees.Title);
+            param.Add("@TitleOfCourtesy", employees.TitleOfCourtesy);
+            param.Add("@FirstName", employees.FirstName);
+            param.Add("@LastName", employees.LastName);
+            param.Add("@Address", employees.Address);
+            param.Add("@City", employees.City);
+            param.Add("@Region", employees.Region);
+            param.Add("@PostalCode", employees.PostalCode);
+            param.Add("@HomePhone", employees.HomePhone);
+            param.Add("@Country", employees.Country);            
+
+            try
+            {
+                SqlMapper.Execute(_connectionFactory.GetConnection,
+                procName, param, commandType: CommandType.StoredProcedure);
+
+                EmployeeId = param.Get<int>("@EmployeeId");
+            }
+            finally
+            {
+                _connectionFactory.CloseConnection();
+            }
+
+            return EmployeeId;
+        }
+
+        public Employees GetEmployeesById(int empId)
+        {
+            var Employees = new Employees();
+            var procName = "spEmployeesFetch";
+            var param = new DynamicParameters();
+            param.Add("@EmployeeId", empId);
+
+            try
+            {
+                using (var multiResult = SqlMapper.QueryMultiple(_connectionFactory.GetConnection,
+                procName, param, commandType: CommandType.StoredProcedure))
+                {
+                    Employees = multiResult.ReadFirstOrDefault<Employees>();
+                    Employees.Territories = multiResult.Read<EmployeesTerritory>().ToList();
+                }
+            }
+            finally
+            {
+                _connectionFactory.CloseConnection();
+            }
+
+            return Employees;
+        }
+
         public IList<Employees> GetEmployeesByQuery()
         {
             var EmpList = new List<Employees>();
