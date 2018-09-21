@@ -37,7 +37,8 @@
     </table>
     <div>
         @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }) |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Back to List</a> | 
+        <a asp-action="Delete" asp-route-id="@(Model.EmployeeID)" class="text-danger"><i class="fas fa-trash text-danger"></i> Delete</a>
     </div>
 
 </div>

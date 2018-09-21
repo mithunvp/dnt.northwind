@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DNT.NorthWind.DataAccess.Interface;
+﻿using DNT.NorthWind.DataAccess.Interface;
 using DNT.NorthWind.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DNT.NorthWind.Web.Controllers
@@ -42,9 +37,7 @@ namespace DNT.NorthWind.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Employees data)
         {
-            try
-            {
-                var employeeId = _employeeRepository.AddEmployee(data);
+            var employeeId = _employeeRepository.AddEmployee(data);
                 if (employeeId > 0)
                 {
                     return RedirectToAction(nameof(Index));
@@ -52,33 +45,27 @@ namespace DNT.NorthWind.Web.Controllers
                 else
                 {
                     return View();
-                }
-                
-            }
-            catch(Exception ex)
-            {
-                return View();
-            }
+                }             
         }
 
         // GET: Home/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var Employee = _employeeRepository.GetEmployeesById(id);
+            return View(Employee);
         }
 
         // POST: Home/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Employees data)
         {
-            try
+            var employeeUpdated = _employeeRepository.UpdateEmployee(id, data);
+            if (employeeUpdated)
             {
-                // TODO: Add update logic here
-
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
@@ -87,24 +74,15 @@ namespace DNT.NorthWind.Web.Controllers
         // GET: Home/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: Home/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
+            var deleted = _employeeRepository.DeleteEmployee(id);
+            if (deleted)
             {
-                // TODO: Add delete logic here
-
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
                 return View();
             }
-        }
+        }        
     }
 }

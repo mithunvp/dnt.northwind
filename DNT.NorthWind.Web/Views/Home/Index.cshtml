@@ -2,8 +2,9 @@
 
 <div style="padding:5px;">
     <p>
-        <a asp-action="Create" asp-controller="Home" title="Create"><i class="fas fa-plus-circle fa-3x"></i></a>
+        <a asp-action="Create" asp-controller="Home" title="Create"><i class="fas fa-plus-circle fa-3x"></i></a><h5>Northwind Employees</h5>
     </p>
+    
     <div class="card-columns">
         @foreach (var item in Model)
         {
@@ -15,7 +16,7 @@
                     <p class="card-text">@($"{item.Title}")</p>
                     <p class="card-text">@($"{item.City}, {item.Country}")</p>
                     <a asp-controller="Home" asp-action="Details" asp-route-id="@(item.EmployeeID)" class="btn btn-secondary"><i class="far fa-eye"></i></a>
-                    <a href="#" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                    <a title="Edit" asp-controller="Home" asp-action="Edit" asp-route-id="@(item.EmployeeID)" class="btn btn-success"><i class="fas fa-edit"></i></a>
                 </div>
             </div>
         }        

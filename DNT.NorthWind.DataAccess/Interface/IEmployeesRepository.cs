@@ -8,5 +8,7 @@ namespace DNT.NorthWind.DataAccess.Interface
         IList<Employees> GetEmployeesByQuery();
         Employees GetEmployeesById(int employeeId);
         int AddEmployee(Employees employees);
+        bool UpdateEmployee(int employeeId, Employees employees);
+        bool DeleteEmployee(int employeeId); 
     }
 }
